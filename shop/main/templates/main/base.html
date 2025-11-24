@@ -37,10 +37,26 @@
                 </li>
                 {% endfor %}
 
+                <!-- 🛒 КОРЗИНА -->
+                <li class="nav-item ms-3">
+                    <a class="btn btn-outline-light position-relative"
+                       href="{% url 'cart:cart_detail' %}">
+
+                        <i class="bi bi-cart3"></i> Корзина
+
+                        {% if cart %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ cart|length }}
+                        </span>
+                        {% endif %}
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>
 </nav>
+
 
 
 <!-- MAIN CONTENT -->

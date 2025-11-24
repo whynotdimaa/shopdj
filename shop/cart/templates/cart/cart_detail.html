@@ -1,0 +1,81 @@
+{% extends "main/base.html" %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+    <h1 class="mb-4">Ваша корзина</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Кількість</th>
+                    <th>Видалити</th>
+                    <th>Ціна за одиницю</th>
+                    <th>Загальна вартість</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in cart %}
+                <tr>
+
+                    <!-- Назва товару -->
+                    <td>{{ item.product.name }}</td>
+
+                    <!-- Оновлення кількості -->
+                    <td>
+                        <form action="{% url 'cart:cart_add' item.product.id %}" method="post">
+                            {{ item.update_quantity_form.quantity }}
+                            {{ item.update_quantity_form.override }}
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                Оновити
+                            </button>
+                        </form>
+
+                    </td>
+
+                    <!-- Видалення -->
+                    <td>
+                        <form action="{% url 'cart:cart_remove' item.product.id %}" method="post">
+                            <button class="btn btn-sm btn-danger">×</button>
+                            {% csrf_token %}
+                        </form>
+                    </td>
+
+                    <!-- Ціна -->
+                    <td>
+                        {{ item.price }} ₴
+                    </td>
+
+                    <!-- Повна ціна за позицію -->
+                    <td>
+                        <strong>{{ item.total_price }} ₴</strong>
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Підсумкова вартість -->
+    <div class="text-end mt-3">
+        <h4>Разом: <strong>{{ cart.get_total_price }} ₴</strong></h4>
+
+        <a href="{% url 'main:product_list' %}" class="btn btn-outline-primary mt-2">
+            Продовжити покупки
+        </a>
+
+        <a
+            Оформити замовлення
+        </a>
+    </div>
+
+</div>
+{% endblock %}
