@@ -1,0 +1,83 @@
+{% extends "main/base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="product-detail container py-4">
+    <div class="row">
+
+        <!-- Фото -->
+        <div class="col-md-6 mb-4">
+            <img src="{{ product.image.url }}"
+                 class="img-fluid rounded"
+                 alt="{{ product.name }}">
+        </div>
+
+        <!-- Інформація -->
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+
+            <p class="price h4 text-danger">
+                {{ product.price }} грн
+            </p>
+
+            <p class="text-muted">
+                Категорія:
+                {% if product.category %}
+                    <a href="{{ product.category.get_absolute_url }}">
+                        {{ product.category.name }}
+                    </a>
+                {% else %}
+                    Без категорії
+                {% endif %}
+            </p>
+
+            <div class="description mt-4">
+                <h3>Опис</h3>
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+
+            <div class="mt-4">
+                <button class="btn btn-primary btn-lg">
+                    Додати в корзину
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Блок пов'язаних товарів -->
+    {% if related_products %}
+    <div class="related-products mt-5">
+        <h3>Схожі товари</h3>
+
+        <div class="row g-4 mt-3">
+            {% for item in related_products %}
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <a href="{{ item.get_absolute_url }}">
+                            <img src="{{ item.image.url }}"
+                                 class="card-img-top"
+                                 style="height: 180px; object-fit: cover;"
+                                 alt="{{ item.name }}">
+                        </a>
+
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="fw-bold">{{ item.price }} ₴</p>
+
+                            <a href="{{ item.get_absolute_url }}"
+                               class="btn btn-outline-primary mt-auto">
+                                Переглянути
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
